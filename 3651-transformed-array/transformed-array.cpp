@@ -5,8 +5,7 @@ public:
         vector<int> result(n);
 
         for(int i=0; i<n ; i++){
-            int idx = ((i + nums[i]) % n + n) % n;
-            result[i] = nums[idx];
+            result[i] = nums[((i + nums[i]) % n + n) % n];
         }
 
         return result;
