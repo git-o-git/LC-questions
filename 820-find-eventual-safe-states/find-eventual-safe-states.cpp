@@ -1,24 +1,24 @@
 class Solution {
 public:
-    bool dfsCheck(int node, vector<vector<int>>& adjL, vector<int>& vis, vector<int>& pathVis, vector<int>& check){
-        vis[node] = 1;
-        pathVis[node] = 1;
-        check[node] = 0;
+    bool dfsCheck(int node, vector<vector<int>>& adjL, vector<bool>& vis, vector<bool>& pathVis, vector<bool>& check){
+        vis[node] = true;
+        pathVis[node] = true;
+        check[node] = false;
 
         for(auto it : adjL[node]){
             if(!vis[it]){
                 if(dfsCheck(it, adjL, vis, pathVis, check)){
-                    check[node] = 0;
+                    check[node] = false;
                     return true;
                 }
             }
-            else if(vis[it]==1 && pathVis[it]==1){
-                check[node] = 0;
+            else if(vis[it] && pathVis[it]){
+                check[node] = false;
                 return true;
             }
         }
-        check[node] = 1;
-        pathVis[node] = 0;
+        pathVis[node] = false;
+        check[node] = true;
         return false;
     }
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
@@ -31,17 +31,16 @@ public:
             }
         }
         vector<int> ans;
-        vector<int> vis(V, 0);
-        vector<int> pathVis(V, 0);
-        vector<int> check(V, 0);
+        vector<bool> vis(V, false), pathVis(V, false), check(V, false);
 
         for(int i=0 ; i<V ; i++){
             if(!vis[i]){
                 dfsCheck(i, adjL, vis, pathVis, check);
             }
         }
+
         for(int i=0 ; i<V ; i++){
-            if(check[i]==1){
+            if(check[i]){
                 ans.push_back(i);
             }
         }
